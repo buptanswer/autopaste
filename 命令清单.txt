@@ -1,0 +1,58 @@
+========================================
+GitHub 发布命令清单
+========================================
+
+你的信息：
+- GitHub 用户名: buptanswer
+- 邮箱: 1404498804@qq.com
+- 仓库名: autopaste
+
+========================================
+第一步：创建 GitHub 仓库
+========================================
+
+访问: https://github.com/new
+
+填写:
+- Repository name: autopaste
+- Description: 🎮 游戏启动器密码自动输入工具 - 使用硬件级键盘模拟，支持战网、Steam、Riot Vanguard等
+- 选择 Public
+- 不勾选任何初始化选项
+
+========================================
+第二步：推送代码（复制以下命令）
+========================================
+
+git remote add origin https://github.com/buptanswer/autopaste.git
+git branch -M main
+git push -u origin main
+
+注意：密码使用 Personal Access Token
+获取 Token: https://github.com/settings/tokens
+
+========================================
+第三步：打包程序
+========================================
+
+python build.py
+
+========================================
+第四步：创建 Release
+========================================
+
+访问: https://github.com/buptanswer/autopaste/releases/new
+
+填写:
+- Tag: v1.0.0
+- Title: AutoPaste v1.0.0 - 首次发布
+- Description: 复制 RELEASE_NOTES.txt 的内容
+- 上传文件: dist/密码自动输入工具.exe
+
+========================================
+完成！
+========================================
+
+你的项目链接:
+- 仓库: https://github.com/buptanswer/autopaste
+- Releases: https://github.com/buptanswer/autopaste/releases
+- Issues: https://github.com/buptanswer/autopaste/issues

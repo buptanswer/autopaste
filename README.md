@@ -3,19 +3,33 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue.svg)](https://www.microsoft.com/windows)
 [![Python: 3.7+](https://img.shields.io/badge/Python-3.7+-green.svg)](https://www.python.org/)
+[![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-brightgreen.svg)](https://github.com/buptanswer/autopaste/releases)
 
-一个专门为游戏启动器（战网、Steam、Riot Vanguard等）设计的自动输入工具，使用硬件级键盘模拟技术，绕过反作弊系统的输入检测。
+一个专门为游戏启动器（战网、Steam、Riot Vanguard等）设计的自动输入工具，使用纯 Windows API 实现，支持 Unicode 多语言输入。
 
-> **作者**: [buptanswer](https://github.com/buptanswer)  
+> **作者**: [buptanswer](https://github.com/buptanswer)
 > **仓库**: [autopaste](https://github.com/buptanswer/autopaste)
+> **当前版本**: v2.0.0 | [更新日志](CHANGELOG.md) | [v1.0 备份](legacy/)
+
+## 🎉 v2.0 重大更新
+
+- 🌏 **Unicode 支持**：现在可以输入中文、日文、韩文等多语言字符！
+- ⚡ **性能优化**：使用纯 Windows API，更快更稳定
+- 🎛️ **运行时配置**：按 `S` 键可调整输入延迟和等待时间
+- 📊 **进度显示**：长文本输入时显示实时进度
+- 🔧 **依赖简化**：从 5 个依赖减少到 2 个
+
+查看 [CHANGELOG.md](CHANGELOG.md) 了解完整变更 | [从 v1.0 升级](升级到v2.0指南.md)
 
 ## ✨ 特性
 
-- 🔐 **硬件级模拟**：使用 DirectInput 进行底层键盘模拟，不会被反作弊系统检测
+- 🌏 **Unicode 支持**：支持中文、日文、韩文等多语言字符输入（v2.0 新增）
+- 🔐 **底层 API 实现**：使用 Windows SendInput API，不会被反作弊系统检测
 - 🎯 **专治顽固启动器**：支持战网、Steam、Riot Vanguard 等各种游戏启动器
-- ⚡ **快捷键触发**：`Ctrl+Alt+J` 一键自动输入剪贴板内容
+- ⚡ **快捷键触发**：`Ctrl+Alt+P` 一键自动输入剪贴板内容
+- 🎛️ **运行时配置**：按 `S` 键调整输入延迟（1-100ms）和等待时间（1-10s）
 - 🛡️ **管理员权限**：自动请求管理员权限，确保输入有效
-- 🎨 **智能识别**：自动处理大小写字母、数字、特殊符号
+- 📊 **进度显示**：长文本输入时每 50 个字符显示一次进度
 - 📦 **开箱即用**：提供打包好的 exe 文件，无需 Python 环境
 
 ## 🚀 快速开始
@@ -24,10 +38,11 @@
 
 1. 从 [Releases](https://github.com/buptanswer/autopaste/releases) 页面下载最新版本的 `密码自动输入工具.exe`
 2. **右键点击** exe 文件，选择 **"以管理员身份运行"**
-3. 复制你要输入的密码到剪贴板（Ctrl+C）
+3. 复制你要输入的内容到剪贴板（Ctrl+C）- 支持中文！
 4. 切换到需要输入的窗口（如游戏启动器登录框）
-5. 按下 `Ctrl+Alt+J` 触发自动输入
-6. 按 `ESC` 退出程序
+5. 按下 `Ctrl+Alt+P` 触发自动输入（默认等待 2 秒）
+6. 按 `S` 键可以调整设置
+7. 按 `ESC` 退出程序
 
 ### 方式二：从源码运行
 
@@ -36,8 +51,8 @@
 git clone https://github.com/buptanswer/autopaste.git
 cd autopaste
 
-# 安装依赖
-pip install pyautogui pyperclip keyboard pydirectinput pywin32
+# 安装依赖（v2.0 只需要 2 个）
+pip install keyboard pywin32
 
 # 以管理员身份运行
 python autopaste.py
@@ -60,18 +75,21 @@ python autopaste.py
 
 ## ⚙️ 配置说明
 
-可以在 [`autopaste.py`](autopaste.py) 中修改以下参数：
+### 运行时配置（v2.0 新增）
+
+程序运行时按 `S` 键打开设置菜单：
+
+1. **输入延迟**：调整每个字符的输入间隔（1-100ms，默认 5ms）
+2. **等待时间**：调整触发后的等待时间（1-10s，默认 2s）
+
+### 代码配置
+
+也可以在 [`autopaste.py`](autopaste.py) 中修改默认值：
 
 ```python
-# 按键按下到松开的持续时间（秒）
-KEY_HOLD_DURATION = 0.08
-
-# 两个字符之间的间隔时间（秒）
-KEY_INTERVAL = 0.1
+input_delay = 5  # 默认每个字符延迟5毫秒
+wait_time = 2    # 默认等待2秒
 ```
-
-- `KEY_HOLD_DURATION`：按键保持时间，太短可能被忽略
-- `KEY_INTERVAL`：字符间隔，模拟真实打字速度，避免被检测
 
 ## 🔧 开发者指南
 
@@ -98,13 +116,12 @@ python build.py
 pyinstaller --onefile --uac-admin --name 密码自动输入工具 autopaste.py
 ```
 
-### 依赖库
+### 依赖库（v2.0）
 
-- `pyautogui` - GUI 自动化
-- `pyperclip` - 剪贴板操作
 - `keyboard` - 键盘事件监听
-- `pydirectinput` - DirectInput 硬件模拟
-- `pywin32` - Windows API 调用
+- `pywin32` - Windows API 调用（剪贴板）
+
+**注意**：v2.0 使用纯 Windows API（ctypes + SendInput），不再需要 pyautogui、pyperclip、pydirectinput。
 
 ## ⚠️ 注意事项
 
@@ -123,7 +140,7 @@ A: 游戏启动器通常以管理员权限运行，普通权限的程序无法�
 A: 可以修改 `KEY_INTERVAL` 参数，但太快可能被反作弊系统检测为脚本。
 
 ### Q: 支持中文输入吗？
-A: 目前仅支持英文字母、数字和常见符号，不支持中文。
+A: **v2.0 已支持！** 现在可以输入中文、日文、韩文等 Unicode 字符。
 
 ### Q: 为什么有时候输入失败？
 A: 确保：
