@@ -3,20 +3,21 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-blue.svg)](https://www.microsoft.com/windows)
 [![Python: 3.7+](https://img.shields.io/badge/Python-3.7+-green.svg)](https://www.python.org/)
-[![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-brightgreen.svg)](https://github.com/buptanswer/autopaste/releases)
+[![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-brightgreen.svg)](https://github.com/buptanswer/autopaste/releases)
 
 一个专门为游戏启动器（战网、Steam、Riot Vanguard等）设计的自动输入工具，使用纯 Windows API 实现，支持 Unicode 多语言输入。
 
 > **作者**: [buptanswer](https://github.com/buptanswer)
 > **仓库**: [autopaste](https://github.com/buptanswer/autopaste)
-> **当前版本**: v2.0.0 | [更新日志](CHANGELOG.md) | [v1.0 备份](legacy/)
+> **当前版本**: v2.0.1 | [更新日志](CHANGELOG.md) | [v1.0 备份](legacy/)
 
 ## 🎉 v2.0 重大更新
 
 - 🌏 **Unicode 支持**：现在可以输入中文、日文、韩文等多语言字符！
 - ⚡ **性能优化**：使用纯 Windows API，更快更稳定
-- 🎛️ **运行时配置**：按 `S` 键可调整输入延迟和等待时间
-- 📊 **进度显示**：长文本输入时显示实时进度
+- 🎛️ **运行时配置**：按 `Ctrl+Alt+S` 可调整输入延迟和等待时间
+- ⏹️ **取消功能**：按 `Ctrl+Alt+C` 可随时取消正在进行的输入
+- 📊 **进度显示**：长文本输入时显示实时倒计时和进度
 - 🔧 **依赖简化**：从 5 个依赖减少到 2 个
 
 查看 [CHANGELOG.md](CHANGELOG.md) 了解完整变更 | [从 v1.0 升级](升级到v2.0指南.md)
@@ -27,7 +28,7 @@
 - 🔐 **底层 API 实现**：使用 Windows SendInput API，不会被反作弊系统检测
 - 🎯 **专治顽固启动器**：支持战网、Steam、Riot Vanguard 等各种游戏启动器
 - ⚡ **快捷键触发**：`Ctrl+Alt+P` 一键自动输入剪贴板内容
-- 🎛️ **运行时配置**：按 `S` 键调整输入延迟（1-100ms）和等待时间（1-10s）
+- 🎛️ **运行时配置**：按 `Ctrl+Alt+S` 调整输入延迟（1-100ms）和等待时间（0.5-10s）
 - 🛡️ **管理员权限**：自动请求管理员权限，确保输入有效
 - 📊 **进度显示**：长文本输入时每 50 个字符显示一次进度
 - 📦 **开箱即用**：提供打包好的 exe 文件，无需 Python 环境
@@ -41,8 +42,8 @@
 3. 复制你要输入的内容到剪贴板（Ctrl+C）- 支持中文！
 4. 切换到需要输入的窗口（如游戏启动器登录框）
 5. 按下 `Ctrl+Alt+P` 触发自动输入（默认等待 2 秒）
-6. 按 `S` 键可以调整设置
-7. 按 `ESC` 退出程序
+6. 按 `Ctrl+Alt+S` 可以调整设置
+7. 按 `Ctrl+Alt+Q` 退出程序
 
 ### 方式二：从源码运行
 
@@ -77,10 +78,10 @@ python autopaste.py
 
 ### 运行时配置（v2.0 新增）
 
-程序运行时按 `S` 键打开设置菜单：
+程序运行时按 `Ctrl+Alt+S` 打开设置菜单：
 
 1. **输入延迟**：调整每个字符的输入间隔（1-100ms，默认 5ms）
-2. **等待时间**：调整触发后的等待时间（1-10s，默认 2s）
+2. **等待时间**：调整触发后的等待时间（0.5-10s，默认 2s）
 
 ### 代码配置
 
@@ -99,10 +100,14 @@ wait_time = 2    # 默认等待2秒
 autopaste/
 ├── autopaste.py          # 主程序
 ├── build.py              # 一键打包脚本
-├── test_imports.py       # 依赖测试脚本
-├── 密码自动输入工具.spec  # PyInstaller 配置
 ├── README.md             # 项目说明
+├── CHANGELOG.md          # 版本变更日志
+├── 升级到v2.0指南.md      # v2.0 升级指南
 ├── LICENSE               # 开源许可证
+├── legacy/               # v1.0 备份
+│   ├── autopaste.py      # v1.0 主程序
+│   ├── build.py          # v1.0 打包脚本
+│   └── README.md         # v1.0 说明
 └── .gitignore           # Git 忽略文件
 ```
 
@@ -137,7 +142,7 @@ pyinstaller --onefile --uac-admin --name 密码自动输入工具 autopaste.py
 A: 游戏启动器通常以管理员权限运行，普通权限的程序无法向其发送输入信号。
 
 ### Q: 输入速度能加快吗？
-A: 可以修改 `KEY_INTERVAL` 参数，但太快可能被反作弊系统检测为脚本。
+A: 可以在运行时按 `Ctrl+Alt+S` 修改 `input_delay` 参数，但太快可能被反作弊系统检测为脚本。
 
 ### Q: 支持中文输入吗？
 A: **v2.0 已支持！** 现在可以输入中文、日文、韩文等 Unicode 字符。
